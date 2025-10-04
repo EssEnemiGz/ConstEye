@@ -1,0 +1,10 @@
+numpy
+pandas
+scikit-learn
+xgboost
+matplotlib
+plotly
+flask
+tensorflow
+lightkurve
+astroquery
