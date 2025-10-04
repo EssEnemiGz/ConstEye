@@ -8,3 +8,4 @@ flask
 tensorflow
 lightkurve
 astroquery
+imblearn
