@@ -1,0 +1,54 @@
+# Constellation Eye (ConstEye)
+## Breve introducción al proyecto
+Presento Constellation Eye (ConstEye), la plataforma interactiva para el descubrimiento de exoplanetas usando recursos de la NASA. El proyecto combina técnicas clásicas de machine learning (Random Forest y Convolutional Neural Networks) con técnicas de astrofísica como el método de transición para clasificar los cambios en las curvas de luz y predecir potenciales exoplanetas.
+## Motivación de ConstEye
+Mi propósito con este proyecto es implementar las técnicas de IA moderna combinadas con los grandes volúmenes de información pública que nos comparte la NASA, para automatizar el proceso de clasificación de exoplanetas, en tres tipos principalmente (no exoplaneta, exoplaneta, candidato), de este modo el descubrimiento sería considerablemente más rápido y del mismo modo, se motiva a otros jóvenes alrededor del mundo a adentrarse a el análisis de datos y la astrofísica.
+# 1. Introducción a los exoplanetas
+### ¿Cuál es la motivación para buscar exoplanetas?
+Los exoplanetas son todo planeta que está fuera del sistema solar, generalmente, orbitan sus propias estrellas, la distancia que hay entre los exoplanetas más cercanos y el planeta Tierra lleva a preguntarse "¿Por qué buscamos exoplanetas? Si ni siquiera podemos habitarlos". La investigación de exoplanetas tiene muchas motivaciones detrás, entre ellas está que al descubrir nuevos exoplanetas entendemos más sobre la formación de nuestro propio sistema solar, la composición de otros planetas, similitudes con respecto al planeta Tierra y por supuesto, investigar si acaso hay algunos planetas que favorezcan la proliferación de vida.
+### Importancia de la automatización con IA
+La cantidad de datos que recolectan los telescopios modernos llega a terabytes diariamente, un volumen de datos masivo, la única forma viable de analizar esa cantidad de datos es con técnicas de Deep Learning, debido a lo veloz y eficientes que son las IA para esas tareas, se reducen los falsos positivos y además, las IA son más sensibles a patrones sensibles como caídas de luz tenues, todo esto motiva a las agencias espaciales a automatizar el proceso de detección y clasificación de exoplanetas.
+# 2. Historia
+## 2.1 Descubrimiento de exoplanetas
+### Método de transición
+El Método de Tránsito es la técnica principal para descubrir exoplanetas, y consiste en **detectar la disminución periódica y sutil del brillo de una estrella** cuando un planeta cruza frente a ella desde nuestra perspectiva. Esta leve atenuación de la luz, llamada **tránsito**, permite a los astrónomos medir el **tamaño del planeta** y su **período orbital**. El patrón debe repetirse regularmente para confirmar que el objeto es un planeta que orbita la estrella, y su éxito ha sido clave para la astrofísica moderna.
+### Misiones
+El Método de Tránsito ha sido implementado por misiones espaciales cruciales que requieren alta precisión y observación continua. La [**Misión Kepler**](https://science.nasa.gov/mission/kepler/) fue la pionera, observando más de 150,000 estrellas en una pequeña región del cielo y confirmando miles de exoplanetas, demostrando que los planetas son comunes. Su extensión, **K2**, continuó el trabajo observando diferentes campos. La misión actual, [**TESS**](https://science.nasa.gov/mission/tess/) (Transiting Exoplanet Survey Satellite), es la sucesora y se enfoca en escanear la mayor parte del cielo en busca de planetas que orbiten estrellas brillantes y cercanas, proporcionando una gran cantidad de candidatos para estudios de seguimiento con telescopios más potentes, como el [James Webb](https://science.nasa.gov/mission/webb/).
+## 2.2 Machine Learning en la astronomía
+### Modelos de IA usados en astronomía
+La astronomía moderna, con su avalancha de datos de telescopios, se ha convertido en una ciencia impulsada por los datos, y la IA es la herramienta clave. Los modelos de _Machine Learning_ se utilizan para clasificar galaxias, predecir supernovas y, como has estado haciendo, **detectar exoplanetas**.
+
+| Tipo de Modelo         | Ejemplos                                                                     | Ventajas                                                                                                                                                                           | Desafíos                                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **ML Clásico**         | **Bosques Aleatorios (Random Forests)**, Máquinas de Soporte Vectorial (SVM) | **Accesibilidad:** Son rápidos de entrenar y no requieren hardware potente (¡puedes usar tu propia laptop!). Ideal para **datos tabulares** (características numéricas extraídas). | Requieren un **experto humano** que extraiga las características relevantes _antes_del entrenamiento. |
+| **Deep Learning (DL)** | **Redes Neuronales Convolucionales (CNNs)**, Redes Recurrentes (RNNs)        | **Potencia:** Aprenden a extraer características directamente de los **datos brutos** (imágenes, series de tiempo). Alcanzan mayor precisión en tareas complejas.                  | Requieren **grandes datasets** y **hardware especializado**(GPUs) para el entrenamiento.              |
+Si buscas adentrarte en este campo, **el ML Clásico, como los Random Forests, es el punto de partida perfecto.**
+
+Modelos como el Random Forest funcionan increíblemente bien con **datos tabulares** preprocesados del [Kepler Dataset](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative). En este proyecto (la primera versión) se ha demostrado que puedes alcanzar un alto nivel de precisión (F1 de hasta 0.78) sin depender de equipos costosos (el primer modelo se entrenó y se probó en una Macbook Air M2 con 8GB de RAM, cualquier equivalente es factible). El campo de la detección de exoplanetas tiene muchas características ya extraídas y limpias (como el período orbital, la duración del tránsito, o la señal a ruido), lo que hace que sea el escenario ideal para que un modelo simple de scikit−learn (como el mostrado en los primeros commits del proyecto) **demuestre su valor sin necesidad de una supercomputadora**. ¡Aproveche la accesibilidad de estas técnicas para hacer sus primeros descubrimientos!
+# 3. Datos
+El análisis riguroso en la detección de exoplanetas se sustenta en la comprensión precisa de la estructura de los datasets generados por las misiones de tránsito y la aplicación de metodologías de pre procesamiento estándar.
+## 3.1 Kepler dataset
+
+El [Kepler Dataset](https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative) representa la base de datos tabular resultante del procesamiento inicial de las curvas de luz capturadas por la Misión Kepler. Este formato facilita la aplicación de algoritmos de _Machine Learning_ clásico debido a su naturaleza estructurada.
+
+- **Estructura:** El conjunto de datos es fundamentalmente **tabular**, donde cada entrada (fila) corresponde a un evento de tránsito estelar identificado, etiquetado como un Objeto de Interés Kepler (KOI).
+- **Características (Features):** Las columnas representan **parámetros astro-físicos y de señal** previamente extraídos del análisis de la curva de luz. Las características cruciales para la discriminación incluyen el **Período Orbital** (P), la **Profundidad del Tránsito** (δ), el **Cociente Señal-Ruido** (SNR) y diversas métricas de diagnóstico diseñadas para identificar fenómenos de falso positivo (e.g., estrellas binarias eclipsantes).
+- **Exoplanetas Confirmados:** La validez histórica del _dataset_ radica en su inclusión de miles de candidatos validados, proporcionando las etiquetas de oro (_gold standard_) para el entrenamiento y la evaluación de modelos de clasificación.
+
+### 3.2 Datasets de curva de luz
+
+Los **Datasets de Curva de Luz** (generados por misiones como Kepler, K2 y TESS) constituyen la serie temporal de brillo estelar , siendo el insumo primario para los modelos de _Deep Learning_ (DL), como las Redes Neuronales Convolucionales (CNNs).
+
+- **Pasos de Preprocesamiento:** Para aislar la señal del tránsito, se requieren pasos de preprocesamiento esenciales:
+    
+    1. **Corrección de Tendencias:** Eliminar la variabilidad estelar intrínseca (e.g., actividad de manchas estelares) para aplanar la línea base de la curva de luz. Esto se realiza comúnmente mediante el ajuste de Splines o la eliminación de componentes de baja frecuencia.
+    2. **Normalización:** Escalar la curva de luz para que el flujo de brillo no afectado por el tránsito se establezca en una unidad base (e.g., 1.0), estandarizando los datos para la entrada del modelo.
+    3. **Manejo de Datos Faltantes (Gaps):** Las interrupciones en la observación (causadas por recalibraciones o errores instrumentales) dan lugar a lagunas (_gaps_) en los datos. La gestión incluye la **interpolación** de los puntos perdidos (imputación) o la **segmentación** de la curva de luz en bloques contiguos para evitar artefactos introducidos por el _gap_.
+
+### 3.3 Etiquetado de datos
+La calidad de las etiquetas es crítica para el entrenamiento de los modelos de IA. El proceso de detección se modela típicamente como un problema de clasificación multi-clase:
+
+- **Etiqueta 1: Confirmado (Confirmed):** Asignada a eventos que han sido validados por completo mediante múltiples métodos o análisis de seguimiento, representando los **verdaderos positivos**.
+- **Etiqueta 2: Candidato (Candidate):** Asignada a eventos que exhiben alta probabilidad de ser un tránsito planetario, pero que **aún no han sido totalmente verificados**. Estos son objetivos prioritarios para la validación de seguimiento.
+- **Etiqueta 0: No-Exoplaneta / Falso Positivo (Non-Exoplanet):** Asignada a eventos de tránsito que se han atribuido a fenómenos astrofísicos no planetarios (e.g., estrellas binarias eclipsantes, _blends_ estelares) o a artefactos instrumentales. Un etiquetado robusto en esta clase es fundamental para **mitigar la tasa de falsos positivos** del modelo de IA.
+

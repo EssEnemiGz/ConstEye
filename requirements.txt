@@ -4,8 +4,9 @@ scikit-learn
 xgboost
 matplotlib
 plotly
-flask
-tensorflow
 lightkurve
 astroquery
 imblearn
+torch
+torchvision
+astropy

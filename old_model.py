@@ -4,7 +4,6 @@ By: EssEnemiGz
 Date: 4-10-2025 (DD-MM-YYYY) at 01:06 (UTC-4)
 """
 
-import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
