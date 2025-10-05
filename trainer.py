@@ -6,8 +6,13 @@ from collections import Counter
 import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import classification_report
+import numpy as np
 
 dataset = LightCurveDataset("data/curves")
+
+SEED = 7
+torch.manual_seed(SEED)
+np.random.seed(SEED)
 
 train_size = int(0.8 * len(dataset))
 test_size = len(dataset) - train_size
@@ -34,11 +39,14 @@ print("Loss weights:", weights)
 criterion = nn.CrossEntropyLoss(weight=weights)
 
 model = ExoCNN().to(device)
-criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 # Entrenamiento
-for epoch in range(100):
+best_loss = float("inf")
+patience = 5
+trigger_times = 0
+
+for epoch in range(500):
     model.train()
     total_loss = 0
     for flux, label in train_dl:
@@ -49,22 +57,32 @@ for epoch in range(100):
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
-    print(f"Epoch {epoch+1:03d} | Loss: {total_loss/len(train_dl):.4f}")
 
+    avg_loss = total_loss / len(train_dl)
+    print(f"Epoch {epoch+1:03d} | Loss: {avg_loss:.4f}")
+
+    # Early stopping
+    if avg_loss < best_loss:
+        best_loss = avg_loss
+        trigger_times = 0
+        torch.save(model.state_dict(), "models/exo_cnn.pth")
+    else:
+        trigger_times += 1
+        if trigger_times >= patience:
+            print("Early stopping triggered")
+            break
 # Evaluación
 model.eval()
-y_true, y_pred = [], []
 
+y_true, y_pred = [], []
 with torch.no_grad():
     for flux, label in test_dl:
         flux = flux.to(device)
         out = model(flux)
-        preds = torch.argmax(F.softmax(out, dim=1), dim=1)
+        preds = torch.argmax(out, dim=1)
         y_true.extend(label.numpy())
         y_pred.extend(preds.cpu().numpy())
 
-print("Class counts:", counts)
-print("Loss weights:", weights)
 print(classification_report(y_true, y_pred, target_names=["No Exo", "Exo", "Candidato"]))
 torch.save(model.state_dict(), "models/exo_cnn.pth")
 
