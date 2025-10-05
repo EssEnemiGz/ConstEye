@@ -17,23 +17,19 @@ train_dl = DataLoader(train_ds, batch_size=8, shuffle=True)
 test_dl = DataLoader(test_ds, batch_size=8)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-counts = Counter([label for _, label in dataset])
+counts = Counter([int(label.item()) if torch.is_tensor(label) else int(label) for _, label in dataset])
 total = sum(counts.values())
-
 num_classes = 3
-weights = []
 
-for i in range(num_classes):
-    if counts[i] > 0:
-        weights.append(total / counts[i])
-    else:
-        weights.append(0.0)
-
-weights = torch.tensor(weights, dtype=torch.float32)
+weights = torch.tensor(
+    [total / (counts[i] if counts[i] > 0 else 1) for i in range(num_classes)],
+    dtype=torch.float32
+)
 weights = weights / weights.sum()
 weights = weights.to(device)
 
-criterion = nn.CrossEntropyLoss(weight=weights)
+print("Class counts:", counts)
+print("Loss weights:", weights)
 
 criterion = nn.CrossEntropyLoss(weight=weights)
 
@@ -53,7 +49,7 @@ for epoch in range(100):
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
-    print(f"Epoch {epoch+1} | Loss: {total_loss/len(train_dl):.4f}")
+    print(f"Epoch {epoch+1:03d} | Loss: {total_loss/len(train_dl):.4f}")
 
 # Evaluación
 model.eval()
