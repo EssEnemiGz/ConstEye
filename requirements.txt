@@ -1,12 +1,10 @@
 numpy
-pandas
-scikit-learn
-xgboost
-matplotlib
-plotly
-lightkurve
-astroquery
-imblearn
 torch
-torchvision
-astropy
+tqdm
+lightkurve
+
+# For the old model
+scikit-learn
+pandas
+joblib
+imblearn

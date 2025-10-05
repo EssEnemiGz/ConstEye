@@ -1,5 +1,4 @@
 import torch
-from torch.utils.data import DataLoader, random_split
 from preprocess import LightCurveDataset
 from model import ExoCNN
 from collections import Counter
