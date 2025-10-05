@@ -24,7 +24,7 @@ class ExoCNN(nn.Module):
             nn.Flatten(),
             nn.Linear(32, 64),
             nn.ReLU(),
-            nn.Dropout(0.4),
+            nn.Dropout(0.5),
             nn.Linear(64, 3)
         )
 

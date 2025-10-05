@@ -4,11 +4,10 @@ from preprocess import LightCurveDataset
 from model import ExoCNN
 from collections import Counter
 import torch.nn as nn
-import torch.nn.functional as F
 from sklearn.metrics import classification_report
 import numpy as np
 
-dataset = LightCurveDataset("data/curves")
+dataset = LightCurveDataset("data/curves", augment=True)
 
 SEED = 7
 torch.manual_seed(SEED)
@@ -16,10 +15,11 @@ np.random.seed(SEED)
 
 train_size = int(0.8 * len(dataset))
 test_size = len(dataset) - train_size
-train_ds, test_ds = random_split(dataset, [train_size, test_size])
+train_ds, test_ds = torch.utils.data.random_split(dataset, [train_size, test_size])
 
-train_dl = DataLoader(train_ds, batch_size=8, shuffle=True)
-test_dl = DataLoader(test_ds, batch_size=8)
+train_dl = torch.utils.data.DataLoader(train_ds, batch_size=16, shuffle=True)
+test_dl = torch.utils.data.DataLoader(test_ds, batch_size=16)
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 counts = Counter([int(label.item()) if torch.is_tensor(label) else int(label) for _, label in dataset])
@@ -39,14 +39,15 @@ print("Loss weights:", weights)
 criterion = nn.CrossEntropyLoss(weight=weights)
 
 model = ExoCNN().to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3)
 
 # Entrenamiento
 best_loss = float("inf")
 patience = 5
 trigger_times = 0
 
-for epoch in range(500):
+for epoch in range(50):
     model.train()
     total_loss = 0
     for flux, label in train_dl:
@@ -59,6 +60,7 @@ for epoch in range(500):
         total_loss += loss.item()
 
     avg_loss = total_loss / len(train_dl)
+    scheduler.step(avg_loss)
     print(f"Epoch {epoch+1:03d} | Loss: {avg_loss:.4f}")
 
     # Early stopping

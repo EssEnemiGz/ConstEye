@@ -19,6 +19,6 @@ def generate_synthetic_curves(class_label, n=50, length=2000):
         filename = f"data/curves/synthetic_{class_label}_{i}.npz"
         np.savez(filename, flux=flux.astype(np.float32), label=np.array(class_label).astype(np.long))
 
-generate_synthetic_curves(0, 200)
-generate_synthetic_curves(1, 200)
-generate_synthetic_curves(2, 200)
+generate_synthetic_curves(0, 2000)
+generate_synthetic_curves(1, 2000)
+generate_synthetic_curves(2, 2000)
