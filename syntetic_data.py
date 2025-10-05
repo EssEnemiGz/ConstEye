@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 
 def generate_synthetic_curves(class_label, n=20, length=2000):
-    data = []
     for i in range(n):
         flux = np.random.normal(1.0, 0.002, length)
         if class_label == 1:

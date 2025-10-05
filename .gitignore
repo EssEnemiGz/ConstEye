@@ -4,3 +4,4 @@ venv
 __pycache__/
 data/curves
 development.log
+evaluation.py
