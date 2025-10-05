@@ -6,7 +6,7 @@ from sklearn.metrics import (classification_report, confusion_matrix,
                              precision_recall_curve, roc_curve, auc)
 from sklearn.calibration import calibration_curve
 from torch.utils.data import DataLoader, random_split
-from preprocess import LightCurveDataset
+from utils.data_processing.preprocess import LightCurveDataset
 from model import ExoCNN
 import torch.nn.functional as F
 
