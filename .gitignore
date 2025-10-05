@@ -5,3 +5,4 @@ __pycache__/
 data/curves
 development.log
 evaluation.py
+evaluation_output/

@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 def generate_synthetic_curves(class_label, n=20, length=2000):
     for i in range(n):
@@ -15,11 +14,11 @@ def generate_synthetic_curves(class_label, n=20, length=2000):
             width = np.random.randint(5, 40)
             flux[transit_pos:transit_pos+width] -= depth
             flux += np.random.normal(0, 0.001, length)
-        
-        df = pd.DataFrame({"flux": flux})
-        df.to_csv(f"data/curves/synthetic_{class_label}_{i}.csv", index=False)
 
-generate_synthetic_curves(0, 20)
-generate_synthetic_curves(1, 20)
-generate_synthetic_curves(2, 20)
+        output_filename = f"data/curves/synthetic_{class_label}_{i}.npz"
+        np.savez(output_filename, flux=flux.astype(np.float32), label=np.array(class_label).astype(np.long))
 
+# Genera tus nuevos archivos en formato .npz
+generate_synthetic_curves(0, 200)
+generate_synthetic_curves(1, 200)
+generate_synthetic_curves(2, 200)
