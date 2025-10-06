@@ -9,7 +9,7 @@ function Header() {
         <div className='flex'>
           <BrowserRouter>
             <Link to="/" className="flex items-center gap-1">
-              <img src={"/public/DataMindAI-logo.svg"} alt="DataMindAi Logo" className='h-8 w-8 sm:w-12 sm:h-12' />
+              <img src={"/public/constEye.jpg"} alt="DataMindAi Logo" className='h-8 w-8 sm:w-12 sm:h-12 rounded-lg' />
               <span className="text-lg sm:text-2xl font-bold text-gray-900">ConstEye</span>
             </Link>
           </BrowserRouter>

@@ -42,8 +42,8 @@ export function FileUpload({ onFileUpload, isAnalyzing, currentFile }: FileUploa
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
               <div>
-                <p className="text-lg font-semibold">Analizando datos...</p>
-                <p className="text-sm text-muted-foreground">Procesando curva de luz con IA</p>
+                <p className="text-lg font-semibold">Analizing data...</p>
+                <p className="text-sm text-muted-foreground">Processing ligth curve with AI</p>
               </div>
             </>
           ) : currentFile ? (
@@ -56,7 +56,7 @@ export function FileUpload({ onFileUpload, isAnalyzing, currentFile }: FileUploa
                 <p className="text-sm text-muted-foreground">{(currentFile.size / 1024).toFixed(2)} KB</p>
               </div>
               <Button onClick={() => document.getElementById("file-input")?.click()} variant="outline" className="mt-2">
-                Cargar otro archivo
+                Upload other file
               </Button>
             </>
           ) : (
@@ -65,13 +65,13 @@ export function FileUpload({ onFileUpload, isAnalyzing, currentFile }: FileUploa
                 <Upload className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <p className="text-lg font-semibold">Arrastra tu archivo aquí</p>
-                <p className="text-sm text-muted-foreground">o haz clic para seleccionar</p>
+                <p className="text-lg font-semibold">Drop your file here</p>
+                <p className="text-sm text-muted-foreground">or click to select</p>
               </div>
               <Button onClick={() => document.getElementById("file-input")?.click()} className="mt-2">
-                Seleccionar archivo
+                Select file
               </Button>
-              <p className="text-xs text-muted-foreground">Formatos: NPZ, CSV (máx. 50MB)</p>
+              <p className="text-xs text-muted-foreground">Formats: NPZ, CSV (máx. 50MB)</p>
             </>
           )}
         </div>

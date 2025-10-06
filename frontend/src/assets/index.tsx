@@ -20,21 +20,42 @@ function Index() {
     lightCurveData: { time: number; flux: number }[]
   } | null>(null)
 
+  const API_URL = 'http://localhost:7777/api/predict'
+
   const handleFileUpload = async (uploadedFile: File) => {
     setFile(uploadedFile)
     setIsAnalyzing(true)
     setPrediction(null)
 
-    await new Promise((resolve) => setTimeout(resolve, 2500))
+    const formData = new FormData()
+    formData.append('file', uploadedFile)
 
-    const mockPrediction = {
-      isExoplanet: Math.random() > 0.4,
-      confidence: 0.75 + Math.random() * 0.24,
-      lightCurveData: generateMockLightCurve(),
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Error desconocido del servidor' }))
+        throw new Error(`Error en el análisis (${response.status}): ${errorData.detail}`)
+      }
+
+      const apiResult = await response.json()
+      const finalPrediction = {
+        isExoplanet: apiResult.isExoplanet,
+        confidence: apiResult.confidence,
+        lightCurveData: apiResult.lightCurveData,
+      }
+
+      setPrediction(finalPrediction)
+
+    } catch (error) {
+      console.error("Fallo la predicción:", error)
+      setPrediction(null)
+    } finally {
+      setIsAnalyzing(false)
     }
-
-    setPrediction(mockPrediction)
-    setIsAnalyzing(false)
   }
 
   const generateMockLightCurve = () => {

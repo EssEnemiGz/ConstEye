@@ -22,13 +22,14 @@ interface LightCurveChartProps {
  * @param {LightCurveChartProps} props - Las propiedades del componente.
  * @returns {JSX.Element | null} El gráfico o un estado de carga/nulo.
  */
+
 export function LightCurveChart({ data, isAnalyzing }: LightCurveChartProps) {
   if (isAnalyzing) {
     return (
       <Card className="flex items-center justify-center bg-card p-12">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Generando curva de luz...</p>
+          <p className="text-muted-foreground">Creating ligth curve</p>
         </div>
       </Card>
     );
@@ -47,46 +48,52 @@ export function LightCurveChart({ data, isAnalyzing }: LightCurveChartProps) {
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <Activity className="h-5 w-5 text-accent" />
-          <h3 className="text-lg font-semibold">Curva de Luz</h3>
+          <h3 className="text-lg font-semibold">Light Curve</h3>
         </div>
 
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
+            <LineChart
+              data={data}
+              margin={{ top: 10, right: 30, left: 40, bottom: 20 }}
+            >
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
 
               <XAxis
                 dataKey="time"
-                stroke="hsl(var(--muted-foreground))"
-                tick={{ fill: "hsl(var(--muted-foreground))" }}
+                stroke="#A0AEC0"
+                tick={{ fill: "#A0AEC0" }}
                 label={{
-                  value: "Tiempo (días)",
+                  value: "Time (days)",
                   position: "insideBottom",
                   offset: -5,
-                  fill: "hsl(var(--muted-foreground))",
+                  fill: "#A0AEC0",
                 }}
               />
 
               <YAxis
-                stroke="hsl(var(--muted-foreground))"
-                tick={{ fill: "hsl(var(--muted-foreground))" }}
+                stroke="#A0AEC0"
+                tick={{ fill: "#A0AEC0" }}
+                tickFormatter={(value) => value.toFixed(4)}
                 label={{
-                  value: "Flujo Normalizado",
+                  value: "Normalized Flow",
                   angle: -90,
                   position: "insideLeft",
-                  fill: "hsl(var(--muted-foreground))",
+                  offset: -35,
+                  fill: "#2D3748",
                 }}
                 domain={yDomain}
               />
 
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "hsl(var(--popover))",
-                  border: "1px solid hsl(var(--border))",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #E2E8F0",
                   borderRadius: "8px",
-                  color: "hsl(var(--popover-foreground))",
+                  color: "#2D3748",
                 }}
-                labelStyle={{ color: "hsl(var(--muted-foreground))" }}
+                labelStyle={{ color: "#A0AEC0" }}
+                itemStyle={{ color: "#2D3748" }}
               />
 
               <ReferenceLine
@@ -98,10 +105,10 @@ export function LightCurveChart({ data, isAnalyzing }: LightCurveChartProps) {
               <Line
                 type="monotone"
                 dataKey="flux"
-                stroke="hsl(var(--primary))"
-                strokeWidth={3}
+                stroke="#2563eb"
+                strokeWidth={2}
                 dot={false}
-                activeDot={{ r: 6, fill: "hsl(var(--accent))" }}
+                activeDot={{ r: 6, fill: "#2563eb", stroke: "#2563eb" }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -109,14 +116,14 @@ export function LightCurveChart({ data, isAnalyzing }: LightCurveChartProps) {
 
         <div className="flex items-center justify-between rounded-lg border border-border bg-secondary/50 p-3 text-xs">
           <div>
-            <span className="text-muted-foreground">Puntos de datos: </span>
+            <span className="text-muted-foreground">Data points: </span>
             <span className="font-mono font-semibold">{data.length}</span>
           </div>
           <div>
-            <span className="text-muted-foreground">Rango: </span>
+            <span className="text-muted-foreground">Range: </span>
             <span className="font-mono font-semibold">
               {data[0]?.time.toFixed(1)} -{" "}
-              {data[data.length - 1]?.time.toFixed(1)} días
+              {data[data.length - 1]?.time.toFixed(1)} days
             </span>
           </div>
         </div>
