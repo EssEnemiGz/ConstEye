@@ -3,6 +3,10 @@ torch
 tqdm
 lightkurve
 
+# For API
+fastapi
+python-multipart
+
 # For the old model
 scikit-learn
 pandas
