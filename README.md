@@ -5,6 +5,59 @@ I present Constellation Eye (ConstEye), the interactive platform for exoplanet d
 ## ConstEye's Motivation
 My purpose with this project is to implement modern AI techniques combined with the large volumes of public information shared by NASA, to automate the process of classifying exoplanets into three main types (non-exoplanet, exoplanet, candidate). This will significantly speed up discovery and motivate other young people around the world to delve into data analysis and astrophysics. This entire project is free and Open Source, and it's designed to be accessible in terms of both hardware and internet connection.
 
+## How to use it
+First, you need to have Git, pnpm (or alternatives) and Python +3.10 installed.
+
+Clone the repository
+```
+git clone https://github.com/EssEnemiGz/ConstEye
+cd ConstEye
+```
+
+Now, create a virtualEnv and install python libraries
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+To install and run frontend
+```
+cd frontend
+pnpm install # Or the package manager you use
+pnpm run dev
+```
+
+In other terminal, execute the backend
+```
+cd backend
+pip install uvicorn 
+uvicorn main:app --host 0.0.0.0 --port 7777
+```
+
+Now you can access the model UI using the URL pnpm gives you.
+
+To train the model, you must be on ConstEye/ root folder, not backend or frontend.
+
+First get the real light curves
+```
+python utils/tools/get_curves.py
+```
+
+After the download, use the synthetic data generator
+```
+python utils/tools/syntetic_data.py
+```
+
+And to finish, train the model
+```
+mkdir models
+python trainer.py
+python evaluation.py # To test the model and see report
+```
+
+The result you get on models/ is your trained model, now you can open it and use it. To use that model on backend copy it to backend/útiles/models
+
 # 1. Introduction to Exoplanets
 ### What is the motivation for searching for exoplanets?
 Exoplanets are any planet outside our solar system, usually orbiting their own stars. The distance between the closest exoplanets and Earth leads one to ask, "Why do we search for exoplanets? If we can't even inhabit them." Exoplanet research has many motivations, including that by discovering new exoplanets, we understand more about the formation of our own solar system, the composition of other planets, similarities to Earth, and of course, investigating if there are any planets that favor the proliferation of life.
