@@ -1,5 +1,5 @@
 import torch
-from preprocess import LightCurveDataset
+from utils.data_processing.preprocess import LightCurveDataset
 from model import ExoCNN
 from collections import Counter
 import torch.nn as nn
